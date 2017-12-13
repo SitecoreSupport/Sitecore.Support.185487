@@ -1,8 +1,5 @@
-﻿using Sitecore.ContentTesting.ContentSearch;
-
-namespace Sitecore.Support.ContentTesting.ContentSearch
+﻿namespace Sitecore.Support.ContentTesting.ContentSearch
 {
-    using Diagnostics;
     using Sitecore;
     using Sitecore.ContentSearch;
     using Sitecore.ContentSearch.Linq.Utilities;
@@ -11,8 +8,9 @@ namespace Sitecore.Support.ContentTesting.ContentSearch
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using Sitecore.ContentTesting.ContentSearch;
 
-    public class TestingSearch : Sitecore.ContentTesting.ContentSearch.TestingSearch
+  public class TestingSearch : Sitecore.ContentTesting.ContentSearch.TestingSearch
     {
         public new TestMetricsRange GetSuggestedTestMetricsRange()
         {
