@@ -4,6 +4,7 @@
     using Sitecore.ContentTesting.ContentSearch.Models;
     using Sitecore.ContentTesting.Helpers;
     using Sitecore.Data;
+    using Sitecore.Support.ContentTesting.ContentSearch;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -23,22 +24,22 @@
             }
             SuggestedTestSearchResultItem[] data = search.GetSuggestedTests().ToArray<SuggestedTestSearchResultItem>();
             TestMetricsRange suggestedTestMetricsRange = search.GetSuggestedTestMetricsRange();
-            TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Potential, delegate (SuggestedTestSearchResultItem r, double v)
+            Sitecore.Support.ContentTesting.Helpers.TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Potential, delegate (SuggestedTestSearchResultItem r, double v)
             {
                 r.Potential = Math.Ceiling(v);
             }, 10.0, suggestedTestMetricsRange.PotentialMin, suggestedTestMetricsRange.PotentialMax);
-            TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Impact, delegate (SuggestedTestSearchResultItem r, double v)
+            Sitecore.Support.ContentTesting.Helpers.TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Impact, delegate (SuggestedTestSearchResultItem r, double v)
             {
                 r.Impact = Math.Ceiling(v);
             }, 10.0, suggestedTestMetricsRange.ImpactMin, suggestedTestMetricsRange.ImpactMax);
-            TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Recommendation, delegate (SuggestedTestSearchResultItem r, double v)
+            Sitecore.Support.ContentTesting.Helpers.TestDataHelper.NormalizeTestData<SuggestedTestSearchResultItem>(data, r => r.Recommendation, delegate (SuggestedTestSearchResultItem r, double v)
             {
                 r.Recommendation = Math.Ceiling(v);
             }, 10.0, suggestedTestMetricsRange.RecommendationMin, suggestedTestMetricsRange.RecommendationMax);
             data = (from x in data
                     where ((x.Potential > 0.0) && (x.Impact > 0.0)) && (x.Recommendation > 0.0)
                     select x).ToArray<SuggestedTestSearchResultItem>();
-            IEnumerable<TestingSearchResultItem> source = this.GetActiveTests(hostItemDataUri, searchText, null);
+            IEnumerable<TestingSearchResultItem> source = this.GetActiveTests(hostItemDataUri, searchText);
             IEnumerable<ID> first = from x in data select x.ItemId;
             IEnumerable<ID> second = source.Select<TestingSearchResultItem, ID>(delegate (TestingSearchResultItem x)
             {
